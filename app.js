@@ -19,7 +19,6 @@ http.createServer(function(req, res) {
             console.log(chunk.toString());
             var data = querystring.parse(chunk.toString());
             res.writeHead(200, {'Content-Type' : 'text/html'});
-            
             if(!regex.test(data.id) && !regey.test(data.id) && data.pw===data.pw1 
             && exptext.test(data.email)==true){
               res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
@@ -32,7 +31,7 @@ http.createServer(function(req, res) {
                <title>Document</title>
              </head>
              <body>
-               <form method="post" action="">
+               <form method="post" action="/send">
                  <div class='pp'><span class="cc">${data.id}</span>님! 반갑습니다. 저에게 편지를 보내주세요!</div>
                  <div>
                   Title : <input type="text" id="tibox" placeholder=""></div>
@@ -51,6 +50,7 @@ http.createServer(function(req, res) {
                 title.style.backgroundColor="${signUpAsset.inputBoxColor}"
                 text.style.width="30vw"
                 text.style.height="30vh"
+                
                 text.style.backgroundColor="${signUpAsset.inputBoxColor}"
                 p.style.color="${signUpAsset.textColor}"
                 c.style.color="${signUpAsset.pointColor}"
@@ -58,11 +58,22 @@ http.createServer(function(req, res) {
                 send.style.height= "5vw"
                 send.style.color="white"
                 send.style.backgroundColor="${signUpAsset.pointColor}"
+                
                </script>
              </body>
-             </html>` )}
+             </html>` )
+             if(req.method == 'POST'&& req.url==="/login"){
+              res.on('data', function(back){
+                console.log(back.toString());
+               querystring.parse(back.toString());
+                res.writeHead(200, {'Content-Type' : 'text/html'})})}
+            }
            
           }) 
-        }}).listen(port, function() {
+        }
+        
+      
+      
+      }).listen(port, function() {
     console.log('Serve');
 });
