@@ -50,7 +50,6 @@ http.createServer(function(req, res) {
                 title.style.backgroundColor="${signUpAsset.inputBoxColor}"
                 text.style.width="30vw"
                 text.style.height="30vh"
-                
                 text.style.backgroundColor="${signUpAsset.inputBoxColor}"
                 p.style.color="${signUpAsset.textColor}"
                 c.style.color="${signUpAsset.pointColor}"
