@@ -1,27 +1,27 @@
-var http = require('http');
-var fs = require("fs")
-var querystring = require('querystring');
-var signUpAsset = require('./module')
+const http = require('http');
+const fs = require("fs")
+const querystring = require('querystring');
+const signUpAsset = require('./module')
 const port = 5000;
-var regex=/^[a-z0-9]*$/;
-var regey=/^[A-Z0-9]*$/;
-var exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+const regex=/^[a-z0-9]*$/;
+const regey=/^[A-Z0-9]*$/;
+const exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
 
 http.createServer(function(req, res) {
-  
+   if(req.method === 'GET' && req.url==="/"){
     fs.readFile('./index.html' ,'utf8' ,function(error, data) {
         res.writeHead(200, {'Content-Type' : 'text/html'});
         res.end(data);
-    }) 
+    })}
     
-    if(req.method === 'POST'){
+    if(req.method === 'POST' && req.url==="/login"){
         var body = '';
         req.on('data', (chunk)=>{
-            body +=chunk.toString()
+            body += chunk.toString()
         })
         req.on('end', () => {
             res.writeHead(200, {'Content-Type' : 'text/html;charset=utf-8'});
-            var data = querystring.parse(body);
+            const data = querystring.parse(body);
             console.log(data);
             if(!regex.test(data.id) && !regey.test(data.id) && data.pw===data.pw1 
             && exptext.test(data.email)==true){
@@ -35,13 +35,13 @@ http.createServer(function(req, res) {
                   <title>Document</title>
                 </head>
                 <body>
-                  <form method="post" action="/send">
+                  <form method="POST" action="/send">
                     <div class='pp'><span class="cc">${data.id}</span>님! 반갑습니다. 저에게 편지를 보내주세요!</div>
-                    <div>
-                     Title : <input type="text" id="tibox" placeholder=""></div>
+                
+                     Title : <input type="text" name="title" id="tibox" placeholder="">
                      <br>
-                     <div>Text : <input type="text" id="tbox" placeholder=""></div>
-                    <input class=btn type="submit" id="send">
+                     Text : <input type="text" name="text" id="tbox" placeholder="">
+                    <input class="btn" type="submit" name="send">
                   </form>
                   <script>
                    let p = document.querySelector(".pp")
@@ -66,19 +66,19 @@ http.createServer(function(req, res) {
                 </html>
                         ` 
                    )
-
             } 
         })}
-        if(req.method == 'POST'&& req.url==="/send"){
+    if(req.method == 'POST'&& req.url==="/send"){
           var head = '';
         req.on('data', (free)=>{
-            head +=free.toString()
+            head += free.toString()
         })
         req.on('end', () => {
-          res.writeHead(200, {'Content-Type' : 'text/html;charset=utf-8'});
-          var meta = querystring.parse(head);
+          const meta = querystring.parse(head);
           console.log(meta);
-          res.end("love")
+          res.writeHead(200, {'Content-Type' : 'text/html;charset=utf-8'});
+          if(meta.title!=="" && meta.text!==""){
+          res.end("love")}
         })
       }
         
